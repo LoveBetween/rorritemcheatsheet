@@ -1,0 +1,27 @@
+/* styles.css */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.left-side {
+    flex: 1;
+    background-color: #383737;
+    padding: 20px;
+}
+
+.right-side {
+    flex: 3;
+    background-color: #5c5b5b;
+    padding: 20px;
+}
+
+.item-icons {
+    padding: 30px;
+    display: flex;
+}
