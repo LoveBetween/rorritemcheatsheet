@@ -7,7 +7,7 @@ const unlock = document.getElementById('item-unlock');
 itemName.style.color = "white";
 itemName.style.textDecoration = "underline";
 description.style.color = "white";
-pickup.style.color = "lightgreen";
+pickup.style.color = "#9bcd35";
 category.style.color = "yellow";
 unlock.style.color = "red";
 
