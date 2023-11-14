@@ -12,7 +12,8 @@ body {
 .left-side {
     flex: 1;
     background-color: #2d2c2c;
-    padding: 20px;
+    padding: 30px;
+    text-align: center;
 }
 
 .right-side {
@@ -30,7 +31,7 @@ body {
 }
 
 .item-icons {
-    display: flex;
+    display: inline-block;
 }
 
 button {
