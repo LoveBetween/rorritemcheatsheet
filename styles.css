@@ -11,17 +11,38 @@ body {
 
 .left-side {
     flex: 1;
-    background-color: #383737;
+    background-color: #2d2c2c;
     padding: 20px;
 }
 
 .right-side {
     flex: 3;
-    background-color: #5c5b5b;
-    padding: 20px;
+    background:
+    linear-gradient(27deg, #2e2e2e 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #2c2c2c 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #3b3b3b 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #3a3a3a 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #363636 10px, transparent 10px),
+    linear-gradient(#363636 25%, #363636 25%, #363636 50%, transparent 50%, transparent 75%, #343434 75%, #3a3a3a);
+    background-color: #2e2e2e;
+    background-size: 20px 20px;
+    padding: 30px;
 }
 
 .item-icons {
-    padding: 30px;
     display: flex;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    appearance: none;
+    background-color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
