@@ -17,11 +17,13 @@ function replaceAll(string, search, replace) {
 }
 
 class itemProperties {
-    constructor(description="", pickup="", category="?", unlock="Unlocked by default.") {
+    constructor(description="", pickup="", category="", unlock="Unlocked by default.", drop="", aquisition="") {
         this.description = description;
         this.pickup = pickup;
         this.category = category;
         this.unlock = unlock;
+        this.drop = drop;
+        this.aquisition = aquisition;
     }
 }
 
@@ -131,6 +133,52 @@ const itemDict = {
     "Substandard_Duplicator": new itemProperties("Picking up an item gives you a temporary copy of itself. Temporary items last an additional 10 (+10 per stack) seconds", "Picked up items yield an additional temporary copy.", "Utility", "Complete the providence Trial \"A Duplicator?!\"."), 
     "Classified_Access_Codes": new itemProperties("The Atlas Cannon appears each stage, activating it deals 40% (+20% per stack) of maximum health as damage to the teleporter boss after it spawns.", "Access a deadly weapon against the Teleporter bosses.", "Damage", "Complete the Providence Trial \"Emergency Ejection\"."), 
     "Umbrella": new itemProperties("Rain begins for 15 seconds (increases per stack) upon activating the Teleporter. Rain stuns, damages, and weakens enemies. You are invincible while it is raining.", "They fear the rain.", "Utility", "Complete the Providence Trial \"Meteor Showers\"."), 
+    // Equipment
+    "Rotten_Brain": new itemProperties("Throw a brain that bounces in place, damaging/slowing enemies for 6x200%.", "Throw a bouncing brain.", ""), 
+    "Safeguard_Lantern": new itemProperties("Drop a lantern for 10 seconds. Fears and damages enemies for 20% damage.", "Drop a lantern that fears and damages enemies for 10 seconds.", ""), 
+    "Snowglobe": new itemProperties("Summon a snowstorm that freezes monsters at a 50% chance/sec over 7 seconds.", "Randomly freeze enemies for 8 seconds.", ""), 
+    "Explorer's_Key": new itemProperties("Open all chests within 20 meters.", "Unlocks all chests in within 20 meters.", ""), 
+    "Foreign_Fruit": new itemProperties("Heal yourself for 50% of your health.", "Heal on use.", ""), 
+    "Instant_Minefield": new itemProperties("Drop 6 mines at your feet, each dealing 400% damage.", "Drop many mines at your feet.", ""), 
+    "Jar_of_Souls": new itemProperties("Duplicate every enemy as a ghost to fight on your side. Ghosts last 15 seconds and have 70% damage.", "Summon a ghost for every enemy in the screen.", ""), 
+    "Carrara_Marble": new itemProperties("Place a marble gate. Teleport back to the gate by activating again.", "Place a marble gate. Teleport back to the gate by activating again.", ""), 
+    "Sawmerang": new itemProperties("Throw out a sawmerang, slicing enemies for 500% damage and making them bleed for 4x100% damage. Boomerangs back.", "Mow them down!", ""), 
+    "Shattered_Mirror": new itemProperties("For 15 seconds, double all your abilities' damage and effects.", "Create a shadow partner for 15 seconds.", ""), 
+    "Disposable_Missile_Launcher": new itemProperties("Fire a swarm of 12 missiles, dealing 300% damage each.", "Fire a swarm of missiles.", ""), 
+    "Gold-Plated_Bomb": new itemProperties("Use 50% of your gold to create a bomb, dealing 1 damage per gold spent. Refund 20% of spent gold on kill.", "Drop and detonate 50% of your money.", ""), 
+    "Drone_Repair_Kit": new itemProperties("All drones are repaired to full health and empowered for 8 seconds. Summons a unique drone.", "Repair and empower all active drones. Summons a unique drone to assist.", ""), 
+    "Thqwib": new itemProperties("Release a bloom of 30 thqwibs, detonating on impact for 200% damage.", "Releases a bloom of Thqwibs, detonating on impact.", ""), 
+    "Dynamite_Plunger": new itemProperties("Hitting an enemy drops dynamite. Use to detonate for 200% damage.", "Hitting enemies drops dynamite. Use to detonate.", ""), 
+    "Mace_Replica": new itemProperties("Swing a powerful mace for 300% damage, knocking enemies away. Guaranteed to activate all on-hit item effects.", "Swing a powerful mace, activating your item effects.", "", "Commando: Activate the 3rd teleporter without being hurt once."), 
+    "Gigantic_Amethyst": new itemProperties("Reset all your cooldowns.", "Resets all your cooldowns.", "", "Loader: Kill the Overloading Magma Worm."), 
+    "Crudely-Drawn_Buddy": new itemProperties("Blow up a decoy, attracting and confusing enemies for 8 seconds. Looks just like you.", "Drop a decoy, attracting nearby enemies.", "", "Sniper: Achieve 15 consecutive perfect reloads."), 
+    "Prescriptions": new itemProperties("Increase damage by 30% and attack speed by 40% for 8 seconds.", "Increase damage and attack speed for 8 seconds.", "", "Enforcer: Stay in Shield Mode for 5 minutes straight (in combat)."), 
+    "Shield_Generator": new itemProperties("Become invincible for 8 seconds.", "Become invulnerable for 8 seconds.", "", "HAN-D: Beat the third stage without falling below 60% health."), 
+    "Unstable_Watch": new itemProperties("Stop time for 7 seconds.", "Pause time for 7 seconds.", "", "Complete the 1st stage in under 5 minutes."), 
+    "Lost_Doll": new itemProperties("Sacrifice 25% health to damage an enemy for 500% of your maximum health.", "Harm yourself to deal massive damage to an enemy.", "", "Survive a boss with less than 20% health."), 
+    "Pillaged_Gold": new itemProperties("For 14 seconds, every hit drops gold.", "For 14 seconds, hitting enemies causes them to drop gold.", "", "Bandit: Kill a boss with Lights Out."), 
+    "Captain's_Brooch": new itemProperties("Call down a chest nearby. Chest cost is doubled.", "One man's wreckage is another man's treasure.", "", "Unlock a golden chest with the Explorer's Key."), 
+    "The_Back-Up": new itemProperties("Create 4 drones to fight for you for 10 seconds.", "Call drones for backup. Lasts 10 seconds.", "", "Have 4 drone helpers at once."), 
+    "Super_Massive_Leech": new itemProperties("For 10 seconds, every hit heals you for 10 health.", "Grant massive life on hit for 10 seconds.", "", "Acrid: Spread Epidemic to 25 enemies."), 
+    "Glowing_Meteorite": new itemProperties("Meteors fall from the sky, damaging enemies and friends for 220% damage. Lasts 8 seconds.", "Rain meteors from the sky, hurting both enemies and allies.", "", "Deal 5000 damage in one shot."), 
+    // Boss
+    "Legendary_Spark": new itemProperties("8% chance on hit to create 2 (+1 per stack) sparks that smite enemies for 200% TOTAL damage.", "Smite them. Smite them all.", "Item", "", "Ancient Wisp"),
+    "Imp_Overlord's_Tentacle": new itemProperties("Summon an imp bodyguard. Revives after 60 (-10 per stack) seconds. Increase imp health and damage by 15% per stack.", "Cut off the head of the snake.. and the body lives on.", "Item", "", "Imp Overlord"),
+    "Burning_Witness": new itemProperties("Killing enemies grants a fire trail and 30% movement speed for 6 (+2 per stack) seconds.", "The Worm's eye seems to still see.. watching.. rewarding..", "Item", "", "Magma Worm"),
+    "Colossal_Knurl": new itemProperties("Increase maximum health by 40, health regeneration by 1.2/second, and armor by 6.", "Increase health, health regeneration, and armor.", "Item", "", "Colossus"),
+    "Ifrit's_Horn": new itemProperties("8% chance on hit to fire a flaming wave that incinerates enemies for 300% (+300% per stack) TOTAL damage.", "Chance to fire a flaming wave.", "Item", "", "Ifrit"),
+    "Nematocyst_Nozzle": new itemProperties("Shoot out 6 nematocysts that deal 400% damage.", "Best served cold.", "Equipment", "", "Wandering Vagrant"),
+    "Scorching_Shell_Piece": new itemProperties("Gain a 20 (+20 per stack) health shield. Fire up to 4 (+2 per stack) projectiles at nearby enemies when it breaks.	", "Gain shield. Fire a barrage of projectiles when it breaks.", "Item", "", "Cremator"),
+    // Special
+    "White_Undershirt_(M)": new itemProperties("Increases armor by 3", "+2 STR S>2m or best offer @@@@@@@@", "Item", "", "", "Drops from the Armored Boarlit on Boar Beach."),
+    "Keycard": new itemProperties("Opens locked security doors.", "Opens locked security doors.", "Item", "", "", "Golden Canisters, enemy drops on Risk of Rain."),
+    "Small_Enigma": new itemProperties("Reduce the cooldown of equipment.", "Reduce the cooldown of equipment.", "Item", "", "", "Drops whenever an equipment would have with the Artifact of Enigma enabled."),
+    "Strange_Battery": new itemProperties("The Strange Battery is an special equipment that doesn't have an entry log, its use is part of a series of steps leading to the unlock of a certain character. The Strange Battery can be found on every variant of Temple of the Elders when playing on Drizzle difficulty. It can be found inside an intractable urn, which drops the item when prompted. The urn is typically located along the edges of the stage. A way to differentiate the urn from similar ones throughout the stage is by its design - bearing a plus-shaped symbol connected to two bracket-like shapes.", "Bzzzt.", "Equipment", "", "", "Hidden in a unique interactable vase on all variants of stage 5, but only on Drizzle."),
+    "Big_Bison_Steak": new itemProperties("	Increase health regeneration and movement speed.", "Increase health regeneration and movement speed.", "Meal", "", "", "One of the meals CHEF can produce from COOK."),
+    "Marinated_Lizard_Loaf": new itemProperties("Increased damage.", "Increased damage.", "Meal", "", "", "One of the meals CHEF can produce from COOK."),
+    "Golem_Essence_on_the_Rocks": new itemProperties("Gain barrier and increased armor.", "Gain barrier and increased armor.", "Meal", "", "", "One of the meals CHEF can produce from COOK."),
+    "Jelly_Brain_Salad": new itemProperties("Reduces skill cooldowns by 1 second.", "Reduces skill cooldowns by 1 second.", "Meal", "", "", "One of the meals CHEF can produce from COOK."),
+    "Fried_Eyeball": new itemProperties("Slow nearby enemies.", "Slow nearby enemies.", "Meal", "", "", "One of the meals CHEF can produce from COOK."), 
 }
 
 // actual functions
@@ -141,7 +189,14 @@ function showDescription(filename) {
         description.textContent = itemProp.description;
         pickup.textContent = "\"" + itemProp.pickup + "\"";
         category.textContent = itemProp.category;
-        unlock.textContent = "Unlock: " + itemProp.unlock;
+        if (itemProp.drop === "" && itemProp.aquisition === "") {
+            unlock.textContent = "Unlock: " + itemProp.unlock;
+            console.log(itemProp.drop)
+        } else if (itemProp.aquisition === "") {
+            unlock.textContent = "Drops from: " + itemProp.drop;
+        } else {
+            unlock.textContent = "Aquisition method: " + itemProp.aquisition;
+        }
     } else {
         description.textContent = "Item Description missing :("
     }
