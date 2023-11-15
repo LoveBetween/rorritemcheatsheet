@@ -18,7 +18,7 @@ body {
 }
 
 .right-side {
-    flex: 3;
+    flex: 4;
     background:
     linear-gradient(27deg, #2e2e2e 5px, transparent 5px) 0 5px,
     linear-gradient(207deg, #2c2c2c 5px, transparent 5px) 10px 0px,
