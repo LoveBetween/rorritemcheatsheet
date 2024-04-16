@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk of Rain Returns Cheat Sheet</title>
+    <title>Risk of Rain Returns Cheat Sheet </title>
     <link rel="stylesheet" type="text/css" href="styles.css">
     <style>
         h2 { padding: 15px; color: #f2ecde; text-align: center; font-family: Arial; font-size: 2.5em;}
-    </style>
+    </style> 
+    <a href="#" class="page-button" onclick="return showPage('item-page','survivor-page');">Show Items</a> 
+    <a href="#" class="page-button" onclick="return showPage('survivor-page','item-page');">Show Survivors Skills</a> 
 </head>
 <body>
-    <div class="container">
-        <div class="left-side">
+    <div class="container" id="item-page">
+        <div class="left-side" style="flex: 1;
+        background-color: #2d2c2c;
+        padding: 30px;
+        margin: 3px;
+        overflow: auto;">
             <!-- Content for the left side goes here -->
             <div style="font-weight:bold;font-size: 1.4em;font-family: Arial;text-align: center;">
                 <div id="item-name"></div>
@@ -28,13 +34,14 @@
             <div style="font-family: Arial;text-align: center;">
                 <div id="item-category"></div>
             </div>
+            <br>
             <div style="font-family: Arial;text-align: center;">
                 <div id="item-id"></div>
             </div>
         </div>
         <div class="right-side">
             <!-- Content for the right side goes here -->
-            <h2>Risk of Rain Returns Cheat Sheet</h2>
+            <h2>Risk of Rain Returns Item Cheat Sheet</h2>
             <hr style="margin: 0; color: #f2ecde;">
             <div class="item-icons" id="item-icons">
 
@@ -74,7 +81,106 @@
                 <div style="font-family: Arial;color: #ffffff; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
                     <div id="special-item-text">Special</div>
                 </div>
+                
+            </div>
+        </div>
+    
+    </div>
+    <div class="container" id="survivor-page">
+        <div class="left-side" style="flex: 1;
+        background-color: #2d2c2c;
+        padding: 30px;
+        margin: 3px;
+        overflow: auto;">
+            <!-- Content for the left side goes here -->
+            <div style="font-weight:bold;font-size: 1.4em;font-family: Arial;text-align: center;">
+                <div id="skill-name"></div>
+            </div>
+            <div style="padding: 20px;font-family: Arial;font-style: italic;text-align: center;">
+                <div id="skill-category"></div>
+            </div>
+            <div style="font-family: Arial;">
+                <div id="skill-description"></div>
+            </div>
+            <div style="padding: 20px;font-family: Arial;text-align: center;">
+                <div id="skill-id"></div>
+            </div>
+        </div>
+        <div class="right-side">
+            <!-- Content for the right side goes here -->
+            <h2>Risk of Rain Returns Survivors Cheat Sheet</h2>
+            <hr style="margin: 0; color: #f2ecde;">
+            <div class="item-icons" id="skill-icons">
 
+                <!-- Commando -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Commando-skill-text">Commando</div>
+                </div>
+
+                <!-- Huntress -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Huntress-skill-text">Huntress</div>
+                </div>
+                <!-- Enforcer -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Enforcer-skill-text">Enforcer</div>
+                </div>
+                <!-- Bandit -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Bandit-skill-text">Bandit</div>
+                </div>
+                <!-- Han-D -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Han-D-skill-text">Han-D</div>
+                </div>
+                <!-- Engineer -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Engineer-skill-text">Engineer</div>
+                </div>
+                <!-- Miner -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Miner-skill-text">Miner</div>
+                </div>
+                <!-- Sniper -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Sniper-skill-text">Sniper</div>
+                </div>
+                <!-- Acrid -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Acrid-skill-text">Acrid</div>
+                </div>
+                <!-- Mercenary -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Mercenary-skill-text">Mercenary</div>
+                </div>
+                <!-- Loader -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Loader-skill-text">Loader</div>
+                </div>
+                <!-- Chef -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Chef-skill-text">Chef</div>
+                </div>
+                <!-- Pilot -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Pilot-skill-text">Pilot</div>
+                </div>
+                <!-- Artificer -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Artificer-skill-text">Artificer</div>
+                </div>
+                <!-- Drifter -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Drifter-skill-text">Drifter</div>
+                </div>
+                <!-- Robomando -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="Robomando-skill-text">Robomando</div>
+                </div>
+                <!-- PlayerDrone -->
+                <div style="font-family: Arial;color: #FFFFFF; font-size: x-large;padding-bottom: 20px;padding-top: 10px;">
+                    <div id="PlayerDrone-skill-text">Player Drone</div>
+                </div>
                 
             </div>
         </div>
