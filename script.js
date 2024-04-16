@@ -26,7 +26,7 @@ skillID.style.color = "cyan";
 
 
 
-document.getElementById("item-page").style.display='none';
+document.getElementById("survivor-page").style.display='none';
 
 // Items
 
