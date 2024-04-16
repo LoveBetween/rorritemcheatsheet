@@ -1,16 +1,34 @@
-// style
+// item style
 const itemName = document.getElementById('item-name');
 const description = document.getElementById('item-description');
 const pickup = document.getElementById('item-pickup');
 const category = document.getElementById('item-category');
 const unlock = document.getElementById('item-unlock');
-const item_id = document.getElementById('item-id');
+const item_id = document.getElementById('item-id'); 
 itemName.style.color = "white";
 itemName.style.textDecoration = "underline";
 description.style.color = "white";
 pickup.style.color = "#9bcd35";
 category.style.color = "yellow";
 unlock.style.color = "red";
+item_id.style.color = "cyan"
+
+// skill style
+const skillName =  document.getElementById('skill-name');
+const skillCategory = document.getElementById('skill-category');
+const skillDescription = document.getElementById('skill-description');
+const skillID = document. getElementById('skill-id');
+skillName.style.color = "white";
+skillName.style.textDecoration = "underline";
+skillDescription.style.color  = "#9bcd35";
+skillCategory.style.color = "yellow";
+skillID.style.color = "cyan";
+
+
+
+document.getElementById("item-page").style.display='none';
+
+// Items
 
 // helper function/class
 function replaceAll(string, search, replace) {
@@ -33,7 +51,7 @@ class itemProperties {
 // dicts
 const itemDict = {
     // Placeholder
-    //"Name": new itemProperties("Description", "PickupText", "Category", "UnlockCondition", "ID"), 
+    //"Name": new itemProperties("type","ID","Description", "PickupText", "Category", "UnlockCondition"), 
     // Common
     "Backup_Magazine": new itemProperties("common",  "87", "Add +1 (+1 per stack) charge of your Secondary skill.", "Add an extra charge of your Secondary skill.", "Utility"),
     "Barbed_Wire": new itemProperties("common", "7","Hurt 1 enemy within 1m (+0.2m per stack) for 50% (+10% per stack) damage every 0.5 seconds.", "Hurts nearby enemies.", "Damage", ),
@@ -183,10 +201,8 @@ const itemDict = {
     "Fried_Eyeball": new itemProperties("special", "111", "Slow nearby enemies.", "Slow nearby enemies.", "Meal", "", "", "One of the meals CHEF can produce from COOK."), 
 }
 
-console.log(itemDict["Name"])
-
 // actual functions
-function showDescription(filename) {
+function showItemDescription(filename) {
     itemName.textContent = replaceAll(filename, '_', ' ');
     if (itemDict.hasOwnProperty(filename)) {
         itemProp = itemDict[filename];
@@ -214,7 +230,7 @@ function showDescription(filename) {
     }
 }
 
-function hideDescription(filename) {
+function hideItemDescription(filename) {
     description.textContent = "";
     itemName.textContent = "";
     pickup.textContent = "";
@@ -223,7 +239,7 @@ function hideDescription(filename) {
     item_id.textContent = "";
 }
 
-function addDiv(filename, itemProperty){
+function addItemDiv(filename, itemProperty){
 
     var button = document.createElement("button");
     button.type = 'submit'
@@ -234,13 +250,13 @@ function addDiv(filename, itemProperty){
     var div = document.createElement("div")
     div.classList.add(filename)
     div.id = filename
-    div.onmouseover = function(){showDescription(filename)}
-    div.onmouseout = function(){hideDescription(filename)}
+    div.onmouseover = function(){showItemDescription(filename)}
+    div.onmouseout = function(){hideItemDescription(filename)}
     button.appendChild(div)
 
     var img = document.createElement("img")
     img.draggable = false
-    img.src="pics/"+itemProperty.type+"/"+filename+".png"
+    img.src="pics/items/"+itemProperty.type+"/"+filename+".png"
     img.alt="Item"
     img.style.height = "50px"
     img.style.width = "auto"
@@ -248,6 +264,275 @@ function addDiv(filename, itemProperty){
     div.appendChild(img)
 }
 
-for (const [filename, itemProperty] of Object.entries(itemDict)) {
-    addDiv(filename, itemProperty)
+// Skills
+
+class skillProperties {
+    constructor(survivor="", skill_id="", skill_name="", skill_description="", skill_category=""){
+        this.survivor = survivor;
+        this.skill_id=skill_id;
+        this.skill_name=skill_name;
+        this.skill_description=skill_description;
+        this.skill_category = skill_category;
+    }
+}
+
+const skillDict = {
+    // Dummy
+    //"Locked": new skillProperties("", "0", "dummySkill", "No skill available.", ""),
+
+    // Commando
+    "Double_Tap": new skillProperties("Commando", "1", "commandoZ", "Shoot rapidly for 60% damage.", "Primary"),
+    "Full_Metal_Jacket": new skillProperties("Commando",  "2", "commandoX", "Shoot through enemies for 230% damage, knocking them back.", "Secondary"),
+    "Tactical_Dive": new skillProperties("Commando",  "3", "commandoC", "Roll forward a small distance.\nYou cannot be hit while rolling.", "Utility"),
+    "Suppressive_Fire": new skillProperties("Commando",  "4", "commandoV", "Fire rapidly, stunning and hitting nearby enemies for 6x60% damage.", "Special"),
+    "Suppressive_Barrage": new skillProperties("Commando",  "5", "commandoVBoosted", "Fires rapidly, stunning and hitting nearby enemies for 10x60% damage.", "Special"),
+    "Combat_Knife": new skillProperties("Commando",  "6", "commandoX2", "Slash enemies for 150% damage, wounding them for 4 seconds.\nWounded enemies take an extra 50% damage from all sources.", "Secondary"),
+    "Tactical_Slide": new skillProperties("Commando",  "7", "commandoC2", "Slide on the ground a short distance.\nYou can fire in either direction while sliding.", "Utility"),
+    "Point-Blank": new skillProperties("Commando",  "8", "commandoV2", "Take out your shotgun and fire, hitting nearby enemies for 6x100% damage.", "Special"),
+    "Lead_Shot": new skillProperties("Commando",  "9", "commandoV2Boosted", "Take out your shotgun and fire, hitting nearby enemies for 8x100% piercing damage.", "Special"),
+    
+    // Huntress
+    "Strafe": new skillProperties("Huntress", "30", "huntressZ", "Fire an arrow for 120% damage. \nYou can shoot all skills while moving.", "Primary"),
+    "Laser_Glaive": new skillProperties("Huntress", "31", "huntressX", "Throw a glaive that bounces to up to 4 enemies for 300% damage. Increases by 30% per bounce.", "Secondary"),
+    "Blink": new skillProperties("Huntress", "32", "huntressC", "Teleport forward a small distance.", "Utility"),
+    "Cluster_Bomb": new skillProperties("Huntress", "33", "huntressV", "Fire an explosive arrow for 320% damage. The arrow drops bomblets that detonate for 6x80% damage.", "Special"),
+    "Mk7_Rockeye": new skillProperties("Huntress", "34", "huntressVBoosted", "Fire an explosive arrow for 320% damage. The arrow drops bomblets that detonate for 12x80%.", "Special"),
+    "Pierce": new skillProperties("Huntress", "35", "huntressZ2", "Hold to charge an arrow shot, firing for up to 1000% damage. \nMove more slowly While casting.", "Primary"),
+    "Laser_Cyclone": new skillProperties("Huntress", "36", "huntressX2", "Throw a large, slow-moving glaive, dealing 50% damage over time, before returning.", "Secondary"),
+    "Warp_Dart": new skillProperties("Huntress", "37", "huntressC2", "Fire a weighted dart, teleporting you to it when it lands. Explodes for 200% damage upon landing.", "Utility"),
+    
+    // Enforcer
+    "Riot_Shotgun": new skillProperties("Enforcer", "10", "enforcerZ", "Fire a short range blast for 160% damage, hitting all enemies.", "Primary"),
+    "Shield_Slam": new skillProperties("Enforcer", "11", "enforcerX", "Smash nearby enemies for 210% damage, knocking them back.", "Secondary"),
+    "Protect_and_Serve": new skillProperties("Enforcer", "12", "enforcerC", "Take a defensive stance, blocking all damage from the front. Increases attack speed, but reduces movement.", "Utility"),
+    "Crowd_Control": new skillProperties("Enforcer", "13", "enforcerV", "Launch a stun grenade, stunning enemies in a huge radius for 250% damage. Can bounce at shallow angles.", "Special"),
+    "Tear_Gas": new skillProperties("Enforcer", "14", "enforcerVBoosted", "Launch a gas grenade, fearing and knocking back enemies in a huge radius for 250% damage. Can bounce at shallow angles.", "Special"),
+    "Shrapnel_Grenade": new skillProperties("Enforcer", "15", "enforcerZ2", "Fire a shrapnel grenade, exploding for 3x60% damage. Holds up to 4 grenades, reactivate when empty to reload your weapon.", "Primary"),
+    "Reload": new skillProperties("Enforcer", "16", "enforcerZ2Reload", "Reload your grenade launcher.", "Primary"),
+    "No_Name": new skillProperties("Enforcer", "17", "enforcerX2", "No description", "Secondary"),
+    "Shield_Tackle": new skillProperties("Enforcer", "18", "enforcerX3", "Dash forwards, slamming nearby enemies for up to 5x100% damage, knocking them back and stunning them.", "Secondary"),
+    "Disperse": new skillProperties("Enforcer", "19", "enforcerV2", "Fire three shotgun blasts for 3x300% damage. More effective on larger enemies. Fires downwards when used airborne.", "Special"),
+    "Evacuate": new skillProperties("Enforcer", "20", "enforcerV2Boosted", "Fire three shotgun blasts, for 3x350% damage, knocking them up and stunning them in a larger radius. More effective on larger enemies. Fires downwards when used airborne.", "Special"),
+    
+    // Bandit
+    "Blast": new skillProperties("Bandit", "21", "banditZ", "Fire a powerful slug for 150% damage.", "Primary"),
+    "Dynamite_Toss": new skillProperties("Bandit", "22", "banditX", "Toss an explosive in an arc for 300% damage.", "Secondary"),
+    "Smokebomb": new skillProperties("Bandit", "23", "banditC", "Turn invisible. After 3 seconds or after using another ability, surprise and stun enemies for 140% damage. ", "Utility"),
+    "Lights_Out": new skillProperties("Bandit", "24", "banditV", "Take aim for a headshot, dealing 500% damage. If this ability kills an enemy, the Bandit's cooldowns are all reset to 0.", "Special"),
+    "Assassinate": new skillProperties("Bandit", "25", "banditVBoosted", "Take aim a headshot for 2x500% damage. If this ability kills an enemy, the Bandit's cooldowns are all reset to 0.", "Special"),
+    "Whip": new skillProperties("Bandit", "26", "banditZ2", "Crack a whip forward for 200% damage, knocking enemies back.", "Primary"),
+    "Flashbang": new skillProperties("Bandit", "27", "banditC2", "Toss a flash grenade, stunning and blinding all enemies. \nBlinded enemies cannot attack, are slowed and take 25% extra damage. ", "Utility"),
+    "Standoff": new skillProperties("Bandit", "28", "banditV2", "Take aim for a headshot, dealing 500% damage. If this ability kills an enemy, gain 1 temporary stack of Standoff.\nStandoff stacks increase damage by 50% each and last 15 seconds.", "Special"),
+    "Quick_Draw": new skillProperties("Bandit", "29", "banditV2Boosted", "Take aim a headshot for 2x600% damage. If this ability kills an enemy, gain 1 temporary stack of Standoff.Standoff stacks increase damage by 50% each and last 20 seconds.", "Special"),
+    
+    // Han-D
+    "HURT": new skillProperties("Han-D", "38", "handZ", "APPLY FORCE TO ALL COMBATANTS FOR 180% DAMAGE.", "Primary"),
+    "DRONE_-_HEAL": new skillProperties("Han-D", "39", "handX", "FIRE A DRONE FOR 190% DAMAGE WHILE ALSO HEALING YOURSELF. GAIN DRONES BY KILLING ENEMIES.", "Secondary"),
+    "OVERCLOCK": new skillProperties("Han-D", "40", "handC", "INCREASE ATTACK SPEED AND STUN CHANCE BY 30%.\nINCREASE DURATION BY ATTACKING ENEMIES.", "Utility"),
+    "FORCED_REASSEMBLY": new skillProperties("Han-D", "41", "handV", "APPLY GREAT FORCE TO ALL COMBATANTS FOR 500% DAMAGE, KNOCKING THEM IN THE AIR.", "Special"),
+    "UNETHICAL_REASSEMBLY": new skillProperties("Han-D", "42", "handVBoosted", "APPLY GREAT FORCE TO ALL COMBATANTS FOR 500% DAMAGE, STUNNING, SHOCKING, AND KNOCKING THEM IN THE AIR", "Special"),
+    "DRONE_-_SPEED": new skillProperties("Han-D", "43", "handX2", "FIRE A DRONE FOR 190% DAMAGE WHILE ALSO TEMPORARILY GAINING ATTACK SPEED. GAIN DRONES BY KILLING ENEMIES.", "Secondary"),
+    "DRONE_-_VENT": new skillProperties("Han-D", "44", "handX3", "FIRE A DRONE FOR 190% DAMAGE WHILE ALSO LOWERING EQUIPMENT COOLDOWNS AND EXTENDING OVERCLOCK DURATION. GAIN DRONES BY KILLING ENEMIES.", "Secondary"),
+    "DRONE_-_BLAST": new skillProperties("Han-D", "45", "handX4", "FIRE A DRONE THAT EXPLODES ON CONTACT FOR 500% DAMAGE, AT BLINDING SPEEDS, EXTENDING OVERCLOCK DURATION. GAIN DRONES BY KILLING ENEMIES.", "Secondary"),
+    "DISASSEMBLE": new skillProperties("Han-D", "46", "handV2", "TEAR COMBATANTS APART FOR 5x90% DAMAGE, SCALING WITH ATTACK SPEED.\nCAN MOVE SLOWLY WHILE CASTING.", "Special"),
+    "DISMANTLE": new skillProperties("Han-D", "47", "handV2Boosted", "TEAR COMBATANTS APART FOR 5x90% DAMAGE, SCALING WITH ATTACK SPEED, BURNING THEM FOR 20% DAMAGE OVER TIME.\nCAN MOVE SLOWLY WHILE CASTING.", "Special"),
+    
+    // Engineer
+    "Tri-nade": new skillProperties("Engineer", "48", "engineerZ", "Launch three grenades for 3x80% damage.", "Primary"),
+    "Bounding_Mine": new skillProperties("Engineer", "49", "engineerX", "Drop a trap that explodes for 300% damage.\nHold up to 10.", "Secondary"),
+    "Thermal_Harpoons": new skillProperties("Engineer", "50", "engineerC", "Launch four heat-seeking harpoons for 4x250% damage.", "Utility"),
+    "Auto_Turret": new skillProperties("Engineer", "51", "engineerV", "Drop a turret that shoots for 3x100% damage, inheriting all of your items.\nHold up to 2.", "Special"),
+    "Auto_Turret_Mk._2": new skillProperties("Engineer", "52", "engineerVBoosted", "Drop a turret that shoots for 3x100% damage for 30 seconds. Hold up to 3.", "Special"),
+    "Mortar_Barrage": new skillProperties("Engineer", "53", "engineerZ2", "Launch mortar rounds in an arc for 80% damage. Can move while firing.", "Primary"),
+    "Shockwave_Mine": new skillProperties("Engineer", "54", "engineerX2", "Drop a defensive mine that knocks enemies back a significant distance for 120% damage. Can trigger up to 3 times.\nHold up to 3.", "Secondary"),
+    "V.0.2_Prototype_Laser_Turret": new skillProperties("Engineer", "55", "engineerV2", "Drop a turret that charges up over 8 seconds and fires for 1200% damage  per hit, inheriting all of your items. \nFragile, rapidly damaging itself while firing.", "Special"),
+    "V.0.5_Beta_Laser_Turret": new skillProperties("Engineer", "56", "engineerV2Boosted", "Drop a turret that charges up over 8 seconds and fires for 1200% damage  per hit, inheriting all of your items. \nFragile, rapidly damaging itself while firing. Hold up to 2.", "Special"),
+    
+    // Miner
+    "Crush": new skillProperties("Miner", "57", "minerZ", "Crush nearby enemies for 160% damage. Gain heat on hit. Deals an additional 45% damage while Scorching.", "Primary"),
+    "Drill_Charge": new skillProperties("Miner", "58", "minerX", "Hold to dash through enemies for 150% damage, spending heat while in use. You cannot be hit while dashing. Incurs no cooldown while Scorching.", "Secondary"),
+    "Backblast": new skillProperties("Miner", "59", "minerC", "Blast backwards for 200% damage, stunning all enemies. You cannot be hit while dashing.  Dash further and for more damage while Scorching.", "Utility"),
+    "To_The_Stars": new skillProperties("Miner", "60", "minerV", "Leap into the air, hitting enemies below for 3x180% damage. Costs 20% heat and incurs no cooldown while Scorching.", "Special"),
+    "Starbound": new skillProperties("Miner", "61", "minerVBoosted", "Leap into the air, hitting enemies below for 5x180% damage. Costs 15% heat and incurs no cooldown while Scorching.", "Special"),
+    "Throwing_Axe": new skillProperties("Miner", "62", "minerZ2", "Toss a pickaxe for 125% damage. Gain heat on hit.\nWhile Scorching, pickaxes pierce, and get thrown more rapidly.", "Primary"),
+    "Drill_Dash": new skillProperties("Miner", "63", "minerX2", "Dash through the air in your held direction. When contacting an enemy, rapidly drill in place for 150% damage for as long as you have heat.", "Secondary"),
+    "Burnout": new skillProperties("Miner", "64", "minerC2", "Explode in a large area for 500% damage, stunning all enemies. Damages you for 25% max health and gain 25% heat. \nCannot die from self-damage.", "Utility"),
+    
+    // Sniper
+    "Snipe": new skillProperties("Sniper", "65", "sniperZ", "Shoot an enemy for 250% damage. Reactivate the ability to reload your weapon, granting bonus damage if timed correctly.", "Primary"),
+    "Steady_Aim": new skillProperties("Sniper", "66", "sniperX", "Carefully take aim, increasing damage the longer the button is held down. On release, fire a bullet for up to 2000% damage.", "Secondary"),
+    "Military_Training": new skillProperties("Sniper", "67", "sniperC", "Backflip a large distance.\nYou cannot be hit while rolling.", "Utility"),
+    "Spotter_SCAN": new skillProperties("Sniper", "68", "sniperV", "Send your Spotter out to analyze the most dangerous enemy, increasing critical strike chance against it by 100%.", "Special"),
+    "Spotter_ISOLATE": new skillProperties("Sniper", "69", "sniperVBoosted", "Send your Spotter out to analyze the most dangerous enemy, slowing and increasing critical strike chance against it by 100%.", "Special"),
+    "Spotter_RECALL": new skillProperties("Sniper", "70", "sniperVRecall", "Cancel the current Spotter operation, returning it to you.", "Special"),
+    "Reload": new skillProperties("Sniper", "71", "sniperZReload", "Reload your sniper rifle, gaining 30-60% bonus damage if timed in the colored zone.", "Primary"),
+    "Improvise": new skillProperties("Sniper", "72", "sniperZ2", "Swing your rifle in front of you, dealing 120% damage and knocking enemies back.", "Primary"),
+    "Quickscope": new skillProperties("Sniper", "73", "sniperX2", "Rapidly take aim, dealing damage within a moving reticle.\nOn release, fire a bullet for 600% damage.", "Secondary"),
+    "Heavy_Recoil": new skillProperties("Sniper", "74", "sniperC2", "Fire at the ground, launching yourself up and away. Deals 200% damage.", "Utility"),
+    
+    // Acrid
+    "Festering_Wounds": new skillProperties("Acrid", "75", "acridZ", "Maul an enemy for 120% damage. The target is poisoned for 24% damage per second.", "Primary"),
+    "Neurotoxin": new skillProperties("Acrid", "76", "acridX", "Spit toxic bile for 220% damage, stunning enemies in a line for 1 second.", "Secondary"),
+    "Caustic_Sludge": new skillProperties("Acrid", "77", "acridC", "Secrete poisonous sludge for 2 seconds. Speeds up allies, while slowing and hurting enemies for 90% damage.", "Utility"),
+    "Epidemic": new skillProperties("Acrid", "78", "acridV", "Release a deadly disease, poisoning enemies for 100% damage per second. The contagion spreads to two targets after 1 second.", "Special"),
+    "Pandemic": new skillProperties("Acrid", "79", "acridVBoosted", "Release a deadly disease, poisoning enemies for 100% damage per second. The contagion spreads to two targets after 1 second. If an enemy is killed by Pandemic, you are healed.", "Special"),
+    "Corrosive_Wounds": new skillProperties("Acrid", "80", "acridZ2", "Maul enemies for 80% damage. Targets are corroded, and take 10% extra damage from all sources.", "Primary"),
+    "Toxic_Bubble": new skillProperties("Acrid", "81", "acridX2", "Spit out a Toxic Bubble, dealing 60% damage over time, and slowing enemies, exploding for 600% damage after 5 seconds. \nCan be pushed by attacking.", "Secondary"),
+    "Dissolving_Ambush": new skillProperties("Acrid", "82", "acridC2", "Spit out a poisonous blob, forming a puddle that slows and hurts enemies for 100% damage. Use a second time to dissolve into acid and warp to the puddle, dealing 400% damage.", "Utility"),
+    
+    // Mercenary
+    "Laser_Sword": new skillProperties("Mercenary", "83", "mercenaryZ", "Slash in front of you, damaging up to 3 enemies for 130% damage.", "Primary"),
+    "Whirlwind": new skillProperties("Mercenary", "84", "mercenaryX", "Quickly slice twice, dealing 2x80% damage to all nearby enemies.", "Secondary"),
+    "Blinding_Assault": new skillProperties("Mercenary", "85", "mercenaryC", "Dash forwards, stunning enemies for 120% damage. If you hit an enemy, you can dash again, up to 3 times.", "Utility"),
+    "Eviscerate": new skillProperties("Mercenary", "86", "mercenaryV", "Target the nearest enemy, attacking them for 6x110% damage.\nYou cannot be hit for the duration.", "Special"),
+    "Massacre": new skillProperties("Mercenary", "87", "mercenaryVBoosted", "Target the nearest enemy, attacking them for 6x110% damage. \nYou cannot be hit for the duration. Refreshes duration on kills, jumping to nearby enemies.", "Special"),
+    "Focused_Strike": new skillProperties("Mercenary", "88", "mercenaryX2", "Hold to sheathe your weapon. Release before an incoming strike to parry enemy attacks for 500%-1000% damage to all nearby enemies.", "Secondary"),
+    "Skyward_Assault": new skillProperties("Mercenary", "89", "mercenaryC2", "Dash upwards damaging enemies for 200% damage. Press again to slam down for 400% damage.", "Utility"),
+    "After-Image": new skillProperties("Mercenary", "90", "mercenaryV2", "Focus briefly, channeling energy into an after-image. All attacks are doubled for three seconds. \nStacks twice.", "Special"),
+    "Between_Time": new skillProperties("Mercenary", "91", "mercenaryV2Boosted", "Focus briefly, channeling energy into multiple clones. All attacks are quadrupled for five seconds. \nStacks twice.", "Special"),
+    
+    // Loader
+    "Knuckleboom": new skillProperties("Loader", "92", "loaderZ", "Batter nearby enemies for 120% damage. Every third hit deals 240% damage and knocks enemies upwards.", "Primary"),
+    "Debris_Shield": new skillProperties("Loader", "93", "loaderX", "Become invincible for 2 seconds while also increasing your movement speed.", "Secondary"),
+    "Hydraulic_Gauntlet": new skillProperties("Loader", "94", "loaderC", "Fire your gauntlet and pull yourself forward, stunning and hurting enemies for 210% damage.\nCan be angled upwards.", "Utility"),
+    "M440_Conduit": new skillProperties("Loader", "95", "loaderV", "Place a lightning rod. After placing two, lightning surges between them, dealing 80% damage per second for 9 seconds.", "Special"),
+    "M700X_Discharge_Conduit": new skillProperties("Loader", "96", "loaderVBoosted", "Place a lightning rod. After placing two, lightning surges between them, dealing 80% damage per second for 9 seconds and stunning initial enemies.", "Special"),
+    "Bullet_Punch": new skillProperties("Loader", "97", "loaderZ2", "Charge up and slam enemies forward, for up to 1000% damage.", "Primary"),
+    "Short_Circuit": new skillProperties("Loader", "98", "loaderX2", "Crash down and stun enemies in a large radius, for 350% damage.", "Secondary"),
+    "S260_Conduit": new skillProperties("Loader", "99", "loaderV2", "Place a lightning beacon. Lightning surges to any nearby allies within a radius, dealing 80% damage per second, and massively increasing attack speed.", "Special"),
+    "S260_Overload_Conduit": new skillProperties("Loader", "100", "loaderV2Boosted", "Place a lightning beacon. Lightning surges to any nearby allies within a large radius, dealing 80% damage per second, and massively increasing attack speed.", "Special"),
+    
+    // Chef
+    "DICE": new skillProperties("Chef", "101", "chefZ", "THROW CLEAVER TOWARDS CUSTOMERS FOR 100% DAMAGE. BOOMERANGS BACK.", "Primary"),
+    "SEAR": new skillProperties("Chef", "102", "chefX", "COOK CUSTOMERS FOR 260% DAMAGE UNTIL GOLDEN BROWN, KNOCKING THEM AWAY.\nSEARING GLAZED CUSTOMERS DEALS +78% DAMAGE AND STUNS.", "Secondary"),
+    "GLAZE": new skillProperties("Chef", "103", "chefC", "RIDE A WAVE OF OIL, SLOWING CUSTOMERS.", "Utility"),
+    "SECOND_HELPING": new skillProperties("Chef", "104", "chefV", "PREPARE A MASTER MEAL, BOOSTING THE NEXT ABILITY CAST.", "Special"),
+    "FULL_COURSE_MEAL": new skillProperties("Chef", "105", "chefVBoosted", "PREPARE A MASTER MEAL, BOOSTING THE NEXT TWO ABILITY CASTS.", "Special"),
+    "SLICE": new skillProperties("Chef", "106", "chefZ2", "STRETCH YOUR ARMS AND SLASH CUSTOMERS FOR 120% DAMAGE.", "Primary"),
+    "OIL_JAR": new skillProperties("Chef", "107", "chefC2", "TOSS OUT A FRAGILE JAR OF OIL, SPREADING AND SLOWING CUSTOMERS. SLIDE WHILE IN OIL.", "Utility"),
+    "COOK": new skillProperties("Chef", "108", "chefV2", "RAPIDLY PREPARE MEAL OUT OF CUSTOMERS FOR 6x80% DAMAGE. SLAIN CUSTOMERS BECOME TASTY TEMPORARY MEAL ITEMS. CANNOT CRIT.", "Special"),
+    "BUFFET": new skillProperties("Chef", "109", "chefV2Boosted", "RAPIDLY PREPARE MEAL OUT OF CUSTOMERS FOR 12x80% DAMAGE. SLAIN CUSTOMERS BECOME TASTY TEMPORARY MEAL ITEMS. CANNOT CRIT.", "Special"),
+    
+    // Pilot
+    "Clusterfire": new skillProperties("Pilot", "110", "pilotZ", "Fire weapon for 95% damage. Every third hit pierces and deals 190% damage.", "Primary"),
+    "Target_Acquired!": new skillProperties("Pilot", "111", "pilotX", "Shoot diagonally upward for 3x115% damage. If airborne, shoot downward instead. Hold to fire continuously.", "Secondary"),
+    "Rapid_Deployment": new skillProperties("Pilot", "112", "pilotC", "Launch into the air, stunning enemies and activating a parachute. If airborne, launch forwards instead.", "Utility"),
+    "Airstrike": new skillProperties("Pilot", "113", "pilotV", "Dash backwards, leaving a bomb that knocks enemies into the air for %150 damage. Can trigger multiple Times. If airborne, dash upwards and drops a bomb directly below instead.", "Special"),
+    "Air_Raid": new skillProperties("Pilot", "114", "pilotVBoosted", "Dash backwards, leaving a bomb that knocks enemies up in the air for %185 damage and stunning. Can trigger multiple Times. If airborne, dash upwards and drops a bomb directly below instead.", "Special"),
+    "Rapid_Fire": new skillProperties("Pilot", "115", "pilotZ2", "Rapidly fire weapon for 75% damage.", "Primary"),
+    "Aerobatics": new skillProperties("Pilot", "116", "pilotC2", "Dash forwards, briefly becoming invincible.\nCan latch onto and climb walls upon dashing onto one.", "Utility"),
+    "Aerial_Support": new skillProperties("Pilot", "117", "pilotV2", "Mark an enemy in front of you, launching an airstrike for 10x120% damage over time.", "Special"),
+    "Aerial_Barrage": new skillProperties("Pilot", "118", "pilotV2Boosted", "Mark an enemy in front of you, launching airstrike for 20x120% damage over time.", "Special"),
+    
+    // Artificer
+    "Flame_Chakrams": new skillProperties("Artificer", "119", "artiZ", "Toss out a chakram for 45% damage. Hits up to 5 times at its peak and ignites for a stacking 10% damage over time, before returning.", "Primary"),
+    "Charged_Nanobomb": new skillProperties("Artificer", "120", "artiX", "Charge up and launch an electric bomb for 180%-600% damage, stunning enemies in range.", "Secondary"),
+    "Frost_Barrier": new skillProperties("Artificer", "121", "artiC", "Create a wall of ice that blocks most enemies and distracts them. When broken, explodes and freezes enemies for 100% damage.", "Utility"),
+    "Flamethrower": new skillProperties("Artificer", "122", "artiV", "Burn enemies in front of you for 10x80% damage and ignites them for 20% damage over time.", "Special"),
+    "Incinerator": new skillProperties("Artificer", "123", "artiVBoosted", "Burn enemies in front of you for 12x100% damage and ignites them for 30% damage over time.", "Special"),
+    "Pulse_Spear": new skillProperties("Artificer", "124", "artiX2", "Toss an electric spear for 300% damage. Cast again mid-flight to pulse the spear, allowing it to briefly pierce through enemies. \nSuccessful pierces refresh your ability to pulse.", "Secondary"),
+    "Tectonic_Surge": new skillProperties("Artificer", "125", "artiC2", "Shatter the earth below you, launching you into the air. Cast mid-air to create a temporary platform to stand on.\nGravity is reduced briefly afterward.", "Utility"),
+    "Localized_Sun": new skillProperties("Artificer", "126", "artiV2", "Summon a miniature, movement tracking star, dealing 120% damage over time. Explodes for 1000% damage after 5 seconds.", "Special"),
+    "Binary_Star": new skillProperties("Artificer", "127", "artiV2Boosted", "Summon two miniature,  movement tracking stars, dealing 120% damage over time. Both explode for 2x1000% damage after 5 seconds.", "Special"),
+    
+    // Drifter
+    "Blunt_Force": new skillProperties("Drifter", "128", "drifterZ", "3-hit Combo, hit enemies in a wide range for 120%-240% damage. Each hit in the combo has an added chance to generate scrap.", "Primary"),
+    "Cleanup": new skillProperties("Drifter", "129", "drifterX", "Toss out some of your spare scrap, spawning 4 bouncing, piercing projectiles for 55% damage each. Small Chance to spawn special projectiles.", "Secondary"),
+    "Suffocate": new skillProperties("Drifter", "130", "drifterC", "Slam enemies with your bag for 200% damage, and stunning them. If the enemy is under 20% health, Consume them; converting them into scrap.", "Utility"),
+    "Salvage": new skillProperties("Drifter", "131", "drifterV", "Consume a large amount of scrap to spawn 4 temporary items.", "Special"),
+    "Recover": new skillProperties("Drifter", "132", "drifterVBoosted", "Consume a large amount of scrap to spawn 6 temporary items.", "Special"),
+    "Scrap_Cube": new skillProperties("Drifter", "133", "drifterX2", "Consume a small amount of scrap and toss out a large scrap cube. \nThe cube can be pushed and shattered, dealing 150% damage while pushed. Fragile!", "Secondary"),
+    "Tornado_Slam": new skillProperties("Drifter", "134", "drifterC2", "Spin around wildly, slamming enemies with your bag for 100% damage.\nIncreases your speed and lowers your gravity.", "Utility"),
+    "Recycle": new skillProperties("Drifter", "135", "drifterV2", "Consume a large amount of scrap to re-roll a pickup.", "Special"),
+    "Rebuild": new skillProperties("Drifter", "136", "drifterV2Boosted", "Consume a large amount of scrap to re-roll a pickup, and an additional temporary copy.", "Special"),
+    
+    // Robomando
+    "SINGLE_FIRE": new skillProperties("Robomando", "138", "robomandoZ", "SHOOT ONCE FOR 60% DAMAGE.", "Primary"),
+    "DE-ESCALATE": new skillProperties("Robomando", "139", "robomandoX", "FIRE A SMALL ELECTRICAL CHARGE THAT PIERCES ENEMIES FOR 180% DAMAGE, STUNNING THEM.", "Secondary"),
+    "EVASIVE_MANEUVER": new skillProperties("Robomando", "140", "robomandoC", "ATTEMPT TO DIVE FORWARD A SMALL DISTANCE.\nYOU CANNOT BE HIT EARLY IN THE MANEUVER.", "Utility"),
+    "RE-WIRE": new skillProperties("Robomando", "141", "robomandoV", "RE-WIRE A MECHANICAL OBJECT, ACTIVATING IT FOR FREE.", "Special"),
+    "OVER-WIRE": new skillProperties("Robomando", "142", "robomandoVBoosted", "RE-WIRE A MECHANICAL OBJECT, ACTIVATING IT FOR FREE, WITH A 20% CHANCE TO DOUBLE OUTPUT.", "Special"),
+
+    // Player Drone
+    "Fire": new skillProperties("PlayerDrone", "137", "playerDroneZ", "Fire once for 80% damage.", "Primary")
+}
+
+function showSkillDescription(filename) {
+    skillName.textContent = replaceAll(filename, '_', ' ');
+    if (skillDict.hasOwnProperty(filename)) {
+        var skillProp = skillDict[filename];
+        skillDescription.textContent = skillProp.skill_description;
+        skillCategory.textContent = skillProp.skill_category;
+        if (skillProp.skill_id === ""){
+            skillID.textContent = "Missing skill ID";
+        }
+        else{
+            skillID.textContent = "Skill ID: " + skillProp.skill_id;
+        }
+    }
+}
+
+function hideSkillDescription(filename) {
+    skillName.textContent = ""
+    skillCategory.textContent = ""
+    skillDescription.textContent = ""
+    skillID.textContent = ""
+}
+
+function addSkillDiv(filename, skillProperty){
+    var button = document.createElement("button");
+    button.type = 'submit'
+
+    var skill_icons = document.getElementById(skillProperty.survivor+"-skill-text")
+    skill_icons.after(button)
+    
+    var div = document.createElement("div")
+    div.classList.add(filename)
+    div.id = filename
+    div.onmouseover = function(){showSkillDescription(filename)}
+    div.onmouseout = function(){hideSkillDescription(filename)}
+    button.appendChild(div)
+
+    var img = document.createElement("img")
+    img.draggable = false
+    img.src="pics/Skills_Survivor/"+skillProperty.survivor+"/"+filename+".png"
+    img.alt="Skill"
+    img.style.height = "50px"
+    img.style.width = "auto"
+    img.onmousedown = function(){preventRightclick(this)}
+    div.appendChild(img)
+}
+
+// Add display
+
+function showPage(shown, hidden) {
+    document.getElementById(hidden).style.display='none';
+    document.getElementById(shown).style.display='flex';
+    return false;
+}
+
+var itemsArray = Object.keys(itemDict).map(function(key) {
+    return [key, itemDict[key]];
+});
+//Sort the array based on field
+itemsArray.sort(function(first, second){
+    return second[1].item_id - first[1].item_id
+});
+
+
+for (const [filename, itemProperty] of itemsArray) {
+    addItemDiv(filename, itemProperty)
+}
+
+// Create skills array
+var skillsArray = Object.keys(skillDict).map(function(key) {
+    return [key, skillDict[key]];
+});
+//Sort the array based on field
+skillsArray.sort(function(first, second){
+    return second[1].skill_id - first[1].skill_id
+});
+
+for (const [filename, skillProperty] of skillsArray) {
+    addSkillDiv(filename, skillProperty)
 }
