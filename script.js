@@ -25,15 +25,14 @@ class itemProperties {
         this.unlock = unlock;
         this.item_id = item_id;
         this.drop = drop;
-        this.aquisition = aquisition;
-        
+        this.aquisition = aquisition;     
     }
 }
 
 // dicts
 const itemDict = {
     // Placeholder
-    "Name": new itemProperties("Description", "PickupText", "Category", "UnlockCondition", "ID"), 
+    //"Name": new itemProperties("Description", "PickupText", "Category", "UnlockCondition", "ID"), 
     // Common
     "Backup_Magazine": new itemProperties( "87", "Add +1 (+1 per stack) charge of your Secondary skill.", "Add an extra charge of your Secondary skill.", "Utility"),
     "Barbed_Wire": new itemProperties("7","Hurt 1 enemy within 1m (+0.2m per stack) for 50% (+10% per stack) damage every 0.5 seconds.", "Hurts nearby enemies.", "Damage", ),
@@ -221,4 +220,36 @@ function hideDescription(filename) {
     category.textContent = "";
     unlock.textContent = "";
     item_id.textContent = "";
+}
+
+
+
+function addDiv(category, filename){
+    var button = document.createElement("button");
+    button.type = 'submit'
+
+    var item_icons = document.getElementById(category)
+    console.log(item_icons)
+    item_icons.appendChild(button)
+    
+    var div = document.createElement("div")
+    div.classList.add(filename)
+    div.id = filename
+    div.onmouseover = function(){showDescription(filename)}
+    div.onmouseout = function(){hideDescription(filename)}
+    button.appendChild(div)
+
+    var img = document.createElement("img")
+    img.draggable = false
+    img.src="pics/common/"+filename+".png"
+    img.alt="Item"
+    img.style.height = "50px"
+    img.style.width = "auto"
+    img.onmousedown = function(){preventRightclick(this)}
+    div.appendChild(img)
+}
+
+for (const [filename, itemProperty] of Object.entries(itemDict)) {
+    addDiv("item-icons",filename)
+
 }
