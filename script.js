@@ -26,7 +26,7 @@ skillID.style.color = "#9bcd35";
 
 //regex for style replacement 
 var numberRegex = /(\d*\.\d+\%*|\d+)/g
-var operatorRegex  = /(\s[\-|\+|x|X]\s|\-|\+|\%)/g
+var operatorRegex  = /(\s[\-|\+|x|X]\s|\+|\-(?![a-zA-Z])|\%)/g
 var moneyRegex = /(\$)/g
 
 document.getElementById("survivor-page").style.display='none';
