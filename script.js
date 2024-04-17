@@ -7,7 +7,7 @@ const unlock = document.getElementById('item-unlock');
 const item_id = document.getElementById('item-id'); 
 itemName.style.color = "white";
 itemName.style.textDecoration = "underline";
-description.style.color = "white";
+description.style.color = "#f2ecde";
 pickup.style.color = "#9bcd35";
 category.style.color = "yellow";
 unlock.style.color = "red";
@@ -20,11 +20,14 @@ const skillDescription = document.getElementById('skill-description');
 const skillID = document. getElementById('skill-id');
 skillName.style.color = "white";
 skillName.style.textDecoration = "underline";
-skillDescription.style.color  = "#9bcd35";
+skillDescription.style.color  = "#f2ecde";
 skillCategory.style.color = "yellow";
-skillID.style.color = "cyan";
+skillID.style.color = "#9bcd35";
 
-
+//regex for style replacement 
+var numberRegex = /(\d*\.\d+\%*|\d+)/g
+var operatorRegex  = /(\s[\-|\+|x|X]\s|\-|\+|\%)/g
+var moneyRegex = /(\$)/g
 
 document.getElementById("survivor-page").style.display='none';
 
@@ -206,7 +209,13 @@ function showItemDescription(filename) {
     itemName.textContent = replaceAll(filename, '_', ' ');
     if (itemDict.hasOwnProperty(filename)) {
         itemProp = itemDict[filename];
+
         description.textContent = itemProp.description;
+        //Adds spans for color description color coding
+        description.innerHTML   = description.innerHTML.replaceAll(numberRegex, ' <span style="color: cyan"> $1 </span> ')
+        description.innerHTML = description.innerHTML.replaceAll(operatorRegex, '<span style="color: #FF6633"> $1 </span>')
+        description.innerHTML = description.innerHTML.replaceAll(moneyRegex, '<span style="color: yellow">$</span>')
+
         pickup.textContent = "\"" + itemProp.pickup + "\"";
         category.textContent = itemProp.category;
         
@@ -457,11 +466,18 @@ const skillDict = {
     "Fire": new skillProperties("PlayerDrone", "137", "playerDroneZ", "Fire once for 80% damage.", "Primary")
 }
 
+
 function showSkillDescription(filename) {
     skillName.textContent = replaceAll(filename, '_', ' ');
     if (skillDict.hasOwnProperty(filename)) {
         var skillProp = skillDict[filename];
+
         skillDescription.textContent = skillProp.skill_description;
+        //Adds spans for color description color coding
+        skillDescription.innerHTML   = skillDescription.innerHTML.replaceAll(numberRegex, ' <span style="color: cyan"> $1 </span> ')
+        skillDescription.innerHTML = skillDescription.innerHTML.replaceAll(operatorRegex, '<span style="color: #FF6633">$1</span>')
+        skillDescription.innerHTML = skillDescription.innerHTML.replaceAll(moneyRegex, '<span style="color: yellow">$</span>')
+
         skillCategory.textContent = skillProp.skill_category;
         if (skillProp.skill_id === ""){
             skillID.textContent = "Missing skill ID";
