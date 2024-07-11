@@ -221,7 +221,6 @@ function showItemDescription(filename) {
         
         if (itemProp.drop === "" && itemProp.aquisition === "") {
             unlock.textContent = "Unlock: " + itemProp.unlock;
-            console.log(itemProp.drop)
         } else if (itemProp.aquisition === "") {
             unlock.textContent = "Drops from: " + itemProp.drop;
         } else {
@@ -252,6 +251,7 @@ function addItemDiv(filename, itemProperty){
 
     var button = document.createElement("button");
     button.type = 'submit'
+    button.setAttribute('class','itemButton')
 
     var item_icons = document.getElementById(itemProperty.type+"-item-text")
     item_icons.after(button)
@@ -551,4 +551,32 @@ skillsArray.sort(function(first, second){
 
 for (const [filename, skillProperty] of skillsArray) {
     addSkillDiv(filename, skillProperty)
+}
+
+
+// Section searchbar
+const SearchBar = document.getElementById("searchbar");
+SearchBar.addEventListener("input", updateSearch);
+
+function updateSearch(e) {
+    var searchRegex = new RegExp(e.target.value, 'i')
+    const searchItems = document.getElementsByClassName("itemButton");
+    for ( let el of searchItems) {
+        var childNode = el.childNodes[0];
+        if (searchInItemDict(childNode.id, searchRegex)) {
+            el.style.display = 'inline';
+        } else {
+            el.style.display = 'none';
+        }
+    }
+};
+
+function searchInItemDict(item, query) {
+    if (item.match(query)) return true;
+    for (const val of Object.values(itemDict[item])) {
+        if (typeof(val) === 'string' && val.match(query)){
+            return true;
+        } 
+    }
+    return false;
 }
